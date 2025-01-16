@@ -1,0 +1,30 @@
+2025-01-13 14:01:33,927 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5003
+2025-01-13 14:01:33,928 - INFO - [33mPress CTRL+C to quit[0m
+2025-01-13 14:03:04,552 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5003
+2025-01-13 14:03:04,552 - INFO - [33mPress CTRL+C to quit[0m
+2025-01-13 14:03:26,237 - INFO - 127.0.0.1 - - [13/Jan/2025 14:03:26] "GET / HTTP/1.1" 200 -
+2025-01-13 14:05:45,194 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5003
+2025-01-13 14:05:45,194 - INFO - [33mPress CTRL+C to quit[0m
+2025-01-13 14:05:45,197 - INFO -  * Restarting with stat
+2025-01-13 14:05:45,435 - WARNING -  * Debugger is active!
+2025-01-13 14:05:45,441 - INFO -  * Debugger PIN: 222-693-915
+2025-01-13 14:06:01,431 - INFO - 127.0.0.1 - - [13/Jan/2025 14:06:01] "[31m[1mPOST / HTTP/1.1[0m" 405 -
+2025-01-13 14:06:04,454 - INFO - 127.0.0.1 - - [13/Jan/2025 14:06:04] "GET / HTTP/1.1" 200 -
+2025-01-13 14:06:35,482 - INFO - 127.0.0.1 - - [13/Jan/2025 14:06:35] "GET /orders HTTP/1.1" 200 -
+2025-01-13 14:06:52,952 - INFO - Order created with product_id=1, quantity=2213, total_price=40312.0
+2025-01-13 14:06:52,952 - INFO - 127.0.0.1 - - [13/Jan/2025 14:06:52] "[35m[1mPOST /orders HTTP/1.1[0m" 201 -
+2025-01-13 14:06:59,306 - INFO - Fetching order with ID: 1
+2025-01-13 14:06:59,320 - DEBUG - Order fetched: [(1, 1, 2, 21.0)]
+2025-01-13 14:06:59,320 - INFO - 127.0.0.1 - - [13/Jan/2025 14:06:59] "GET /orders/1 HTTP/1.1" 200 -
+2025-01-13 14:07:05,736 - INFO - 127.0.0.1 - - [13/Jan/2025 14:07:05] "[33mGET /orders/ HTTP/1.1[0m" 404 -
+2025-01-13 14:07:17,258 - INFO - Order created with product_id=1, quantity=2213, total_price=40312.0
+2025-01-13 14:07:17,258 - INFO - 127.0.0.1 - - [13/Jan/2025 14:07:17] "[35m[1mPOST /orders HTTP/1.1[0m" 201 -
+2025-01-13 14:07:22,794 - INFO - Fetching order with ID: 2
+2025-01-13 14:07:22,795 - DEBUG - Order fetched: [(2, 1, 2, 40.0)]
+2025-01-13 14:07:22,795 - INFO - 127.0.0.1 - - [13/Jan/2025 14:07:22] "GET /orders/2 HTTP/1.1" 200 -
+2025-01-13 14:07:29,530 - INFO - 127.0.0.1 - - [13/Jan/2025 14:07:29] "GET /orders HTTP/1.1" 200 -
+2025-01-13 14:12:58,772 - INFO -  * Detected change in 'D:\\fruit_store\\backend\\order_service\\app.py', reloading
+2025-01-13 14:12:58,898 - INFO -  * Restarting with stat

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Product Management</h1>
+
+        <!-- Add Product Form -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4>Add New Product</h4>
+                <form id="addProductForm">
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" id="productName" class="form-control" placeholder="Enter product name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Price</label>
+                        <input type="number" id="productPrice" class="form-control" placeholder="Enter product price" required>
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="addProduct()">Add Product</button>
+                </form>
+                <div id="addMessage" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4>Product List</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Edit Product Form -->
+        <div id="editProductSection" class="card mt-4 d-none">
+            <div class="card-body">
+                <h4>Edit Product</h4>
+                <form id="editProductForm">
+                    <div class="mb-3">
+                        <label for="editProductName" class="form-label">Product Name</label>
+                        <input type="text" id="editProductName" class="form-control" placeholder="Enter new product name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductPrice" class="form-label">Price</label>
+                        <input type="number" id="editProductPrice" class="form-control" placeholder="Enter new product price" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="updateProduct()">Update Product</button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+                </form>
+                <div id="editMessage" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5002/products';
+        let currentEditProductId = null;
+
+        // Fetch all products
+        async function fetchProducts() {
+            try {
+                const response = await axios.get(API_BASE_URL);
+                const products = response.data;
+                const productList = document.getElementById('productList');
+
+                productList.innerHTML = '';
+                products.forEach(product => {
+                    productList.innerHTML += `
+                        <tr>
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.price}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="startEditProduct(${product.id}, '${product.name}', ${product.price})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        // Add new product
+        async function addProduct() {
+            const name = document.getElementById('productName').value;
+            const price = document.getElementById('productPrice').value;
+
+            try {
+                await axios.post(API_BASE_URL, { name, price });
+                document.getElementById('addMessage').innerHTML = '<div class="alert alert-success">Product added successfully!</div>';
+                document.getElementById('addProductForm').reset();
+                fetchProducts();
+            } catch (error) {
+                document.getElementById('addMessage').innerHTML = '<div class="alert alert-danger">Failed to add product.</div>';
+                console.error('Error adding product:', error);
+            }
+        }
+
+        // Delete product
+        async function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            try {
+                await axios.delete(`${API_BASE_URL}/${productId}`);
+                fetchProducts();
+            } catch (error) {
+                console.error('Error deleting product:', error);
+            }
+        }
+
+        // Start editing product
+        function startEditProduct(id, name, price) {
+            currentEditProductId = id;
+
+            // Show the edit form and fill with existing product data
+            document.getElementById('editProductSection').classList.remove('d-none');
+            document.getElementById('editProductName').value = name;
+            document.getElementById('editProductPrice').value = price;
+
+            // Hide add form
+            document.getElementById('addProductForm').classList.add('d-none');
+        }
+
+        // Update product
+        async function updateProduct() {
+            const name = document.getElementById('editProductName').value;
+            const price = document.getElementById('editProductPrice').value;
+
+            try {
+                await axios.put(`${API_BASE_URL}/${currentEditProductId}`, { name, price });
+                document.getElementById('editMessage').innerHTML = '<div class="alert alert-success">Product updated successfully!</div>';
+                cancelEdit();
+                fetchProducts();
+            } catch (error) {
+                document.getElementById('editMessage').innerHTML = '<div class="alert alert-danger">Failed to update product.</div>';
+                console.error('Error updating product:', error);
+            }
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            currentEditProductId = null;
+
+            // Hide the edit form
+            document.getElementById('editProductSection').classList.add('d-none');
+
+            // Show add form
+            document.getElementById('addProductForm').classList.remove('d-none');
+        }
+
+        // Load products on page load
+        fetchProducts();
+    </script>
+</body>
+</html>
